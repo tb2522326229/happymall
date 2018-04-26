@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+	<settings>
+	<!-- 全局启用或禁用延迟加载，禁用时，所有对象都会立即加载。开启延迟加载设置为true -->
+		<setting name="lazyLoadingEnabled" value="true"/>
+		<!-- 按需加载 -->
+		<setting name="aggressiveLazyLoading" value="fasle"/>
+		<!-- 配置哪些方法会触发所有延迟加载对象加载 -->
+		<setting name="lazyLoadTriggerMethods" value="clone"/>
+		<setting name="mapUnderscoreToCamelCase" value="true"/>
+	</settings>
+	<!--  配置分页插件  -->
+	<plugins>
+		<plugin interceptor="com.github.pagehelper.PageHelper">
+			<property name="dialect" value="mysql"/>
+		</plugin>
+	</plugins>
+</configuration>
