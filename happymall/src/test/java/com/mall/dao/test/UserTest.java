@@ -1,4 +1,4 @@
-package com.mall.test;
+package com.mall.dao.test;
 
 import org.apache.ibatis.session.SqlSession;
 import org.junit.Test;

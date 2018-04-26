@@ -19,7 +19,7 @@
 	    <context:annotation-config />
 	    
 	    <context:component-scan base-package="com.mall.pojo" />
-	    <!-- <context:component-scan base-package="com.mall.service" /> -->
+	    <context:component-scan base-package="com.mall.service" />
 	   
        <context:property-placeholder location="classpath:database.properties" />
        <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" destroy-method="close">
@@ -47,13 +47,13 @@
 		<constructor-arg name="sqlSessionFactory" ref="sqlSessionFactory"/>
 		<constructor-arg name="executorType" value="BATCH"/>
 	</bean>
-	<!--  配置事务管理器 
+	<!--  配置事务管理器  -->
 	<bean id="txManager"
 		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
 		<property name="dataSource" ref="dataSource" />
 	</bean>
 	
-	配置事务
+	<!-- 配置事务 -->
 	<tx:advice id="txActive" transaction-manager="txManager">
 		<tx:attributes>
 			<tx:method name="get*" read-only="true" />
@@ -63,9 +63,9 @@
 		</tx:attributes>
 	</tx:advice>
 	
-	配置切面
+	<!-- 配置切面 -->
 	<aop:config>
 		<aop:pointcut expression="execution(* com.mall.service.*Service.*(..))" id="curdPc" />
 		<aop:advisor advice-ref="txActive" pointcut-ref="curdPc" />
-	</aop:config> -->
+	</aop:config>
 </beans>
