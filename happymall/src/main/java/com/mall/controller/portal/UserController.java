@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.mall.commom.Const;
+import com.mall.commom.ResponseCode;
 import com.mall.commom.ServerResponse;
 import com.mall.pojo.User;
 import com.mall.service.IUserService;
@@ -40,7 +41,7 @@ public class UserController {
 	 * @param httpSession
 	 * @return
 	 */
-	@RequestMapping(value="logout.do",method=RequestMethod.GET)
+	@RequestMapping(value="logout.do",method=RequestMethod.POST)
 	@ResponseBody
 	public ServerResponse<String> logout(HttpSession httpSession){
 		httpSession.removeAttribute(Const.CURRENT_USER);
@@ -52,7 +53,7 @@ public class UserController {
 	 * @param user
 	 * @return
 	 */
-	@RequestMapping(value="register.do",method=RequestMethod.GET)
+	@RequestMapping(value="register.do",method=RequestMethod.POST)
 	@ResponseBody
 	public ServerResponse<String> register(User user){
 		return userService.register(user);
@@ -64,7 +65,7 @@ public class UserController {
 	 * @param type 传入的类型是用户名还是密码
 	 * @return
 	 */
-	@RequestMapping(value="check_valid.do",method=RequestMethod.GET)
+	@RequestMapping(value="check_valid.do",method=RequestMethod.POST)
 	@ResponseBody
 	public ServerResponse<String> checkValid(String str,String type){
 		return userService.checkValid(str,type);
@@ -75,7 +76,7 @@ public class UserController {
 	 * @param httpSession
 	 * @return
 	 */
-	@RequestMapping(value="get_user_info.do",method=RequestMethod.GET)
+	@RequestMapping(value="get_user_info.do",method=RequestMethod.POST)
 	@ResponseBody
 	public ServerResponse<User> getUserinfo(HttpSession httpSession){
 		User user = (User)httpSession.getAttribute(Const.CURRENT_USER);
@@ -90,7 +91,7 @@ public class UserController {
 	 * @param username
 	 * @return
 	 */
-	@RequestMapping(value="forget_get_question.do",method=RequestMethod.GET)
+	@RequestMapping(value="forget_get_question.do",method=RequestMethod.POST)
 	@ResponseBody
 	public ServerResponse<String> getQuestionByUsername(String username){
 		return userService.getQuestionByUsername(username);
@@ -103,11 +104,75 @@ public class UserController {
 	 * @param answer
 	 * @return
 	 */
-	@RequestMapping(value="forget_check_answer.do",method=RequestMethod.GET)
+	@RequestMapping(value="forget_check_answer.do",method=RequestMethod.POST)
 	@ResponseBody
 	public ServerResponse<String> checkAnswer(String username,String question,String answer){
 		return userService.checkAnswer(username,question,answer);
 	}
 	
+	/**
+	 * 忘记密码后修改密码
+	 * @param username
+	 * @param newPassword
+	 * @param forgetToken
+	 * @return
+	 */
+	@RequestMapping(value="forget_reset_password.do",method=RequestMethod.POST)
+	@ResponseBody
+	public ServerResponse<String> forgetResetPassword(String username,String newPassword,String forgetToken){
+		return userService.forgetResetPassword(username,newPassword,forgetToken);
+	}
 	
+	/**
+	 * 登录状态下修改密码
+	 * @param oldPassword 旧密码
+	 * @param newPassword 新密码
+	 * @param session
+	 * @return
+	 */
+	@RequestMapping(value="reset_password.do",method=RequestMethod.POST)
+	@ResponseBody
+	public ServerResponse<String> resetPassword(HttpSession session,String oldPassword,String newPassword){
+		User user = (User)session.getAttribute(Const.CURRENT_USER);
+		if(user == null){
+			ServerResponse.createByErrorMessage("用户为空，请登录");
+		}
+		return userService.resetPassword(oldPassword, newPassword, user);
+	}
+	
+	/**
+	 * 修改用户
+	 * @param session
+	 * @param user
+	 * @return
+	 */
+	@RequestMapping(value="update_information.do",method=RequestMethod.POST)
+	@ResponseBody
+	public ServerResponse<User> updateUser(HttpSession session,User user){
+		User currentUser = (User)session.getAttribute(Const.CURRENT_USER);
+		if(currentUser == null){
+			ServerResponse.createByErrorMessage("用户为空，请登录");
+		}
+		user.setId(currentUser.getId());
+		ServerResponse<User> response = userService.updateUser(user);
+		if(response.isSuccess()){
+			session.setAttribute(Const.CURRENT_USER,response.getData());
+		}
+		return response;
+	}
+	
+	/**
+	 * 获取用户详细信息
+	 * @param session
+	 * @return
+	 */
+	@RequestMapping(value = "get_information.do",method = RequestMethod.POST)
+    @ResponseBody
+	public ServerResponse<User> get_information(HttpSession session){
+		User currentUser = (User)session.getAttribute(Const.CURRENT_USER);
+		if(currentUser == null){
+			return ServerResponse.createByErrorMessage(ResponseCode.NEED_LOGIN.getCode(),"未登录,需要强制登录status=10");
+		}
+		return userService.getInformation(currentUser.getId());
+	}
 }

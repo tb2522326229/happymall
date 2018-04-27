@@ -42,4 +42,35 @@ public interface IUserService {
 	 * @return
 	 */
 	public ServerResponse<String> checkAnswer(String username, String question, String answer);
+
+	/**
+	 * 忘记密码后重置密码
+	 * @param username
+	 * @param newPassword
+	 * @param forgetToken
+	 * @return
+	 */
+	public ServerResponse<String> forgetResetPassword(String username, String newPassword, String forgetToken);
+
+	/**
+	 * 登录状态下修改密码
+	 * @param oldPassword
+	 * @param newPassword
+	 * @param user
+	 */
+	public ServerResponse<String> resetPassword(String oldPassword, String newPassword, User user);
+
+	/**
+	 * 修改user
+	 * @param user
+	 * @return
+	 */
+	public ServerResponse<User> updateUser(User user);
+
+	/**
+	 * 根据id获取用户的详细信息
+	 * @param id
+	 * @return
+	 */
+	public ServerResponse<User> getInformation(Integer id);
 }
