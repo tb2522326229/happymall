@@ -100,7 +100,7 @@ public class CategoryManagerController {
 	 */
 	@RequestMapping("get_deep_category.do")
     @ResponseBody
-	public ServerResponse getCategoryAndDeepChildrenCategory(HttpSession session,@RequestParam(value = "categoryId" ,defaultValue = "0") Integer categoryId){
+	public ServerResponse<List<Integer>> getCategoryAndDeepChildrenCategory(HttpSession session,@RequestParam(value = "categoryId" ,defaultValue = "0") Integer categoryId){
 		User user = (User)session.getAttribute(Const.CURRENT_USER);
 		if(user == null){
 			return ServerResponse.createByErrorMessage(ResponseCode.NEED_LOGIN.getCode(),"请重新登陆");
