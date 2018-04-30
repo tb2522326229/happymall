@@ -60,6 +60,7 @@ public class CategoryServiceImpl implements ICategoryService {
 	public ServerResponse<List<Integer>> selectCategoryChildrenByParentId(Integer categoryId) {
 		Set<Category> categorySet = Sets.newHashSet();
         findChildCategory(categorySet,categoryId);
+        // 获取所有子节点+孙子节点的categoryId
         List<Integer> categoryIdList = Lists.newArrayList();
         if(categoryId != null){
             for(Category categoryItem : categorySet){
