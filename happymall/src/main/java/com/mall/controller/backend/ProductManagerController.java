@@ -130,9 +130,9 @@ public class ProductManagerController {
 	 @ResponseBody
 	 public ServerResponse upload(HttpSession session,@RequestParam(value = "upload_file",required = false) MultipartFile file,HttpServletRequest request){
 		 User user = (User)session.getAttribute(Const.CURRENT_USER);
-	        /*if(user == null){
+	        if(user == null){
 	            return ServerResponse.createByErrorMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,请登录管理员");
-	        }if(userService.checkAdminRole(user).isSuccess()){*/
+	        }if(userService.checkAdminRole(user).isSuccess()){
 	        	String path = request.getSession().getServletContext().getRealPath("upload");
 	            String targetFileName = fileService.upload(file,path);
 	            String url = PropertiesUtil.getProperty("ftp.server.http.prefix")+targetFileName;
@@ -140,9 +140,9 @@ public class ProductManagerController {
 	            fileMap.put("uri",targetFileName);
 	            fileMap.put("url",url);
 	            return ServerResponse.createBySuccess(fileMap);
-	      /*  }else{
+	        }else{
 	            return ServerResponse.createByErrorMessage("无权限操作");
-	        }*/
+	        }
 	 }
 	 
 	 @RequestMapping("richtext_img_upload.do")
