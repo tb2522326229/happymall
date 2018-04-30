@@ -27,9 +27,9 @@ public class UserTest {
 	
 	@Test
 	public void testList(){
-		ServerResponse<User> user = userService.getInformation(1);
-		if(user.isSuccess()){
-			System.out.println(user.getStatus());
+		ServerResponse<User> userResponse = userService.getInformation(1);
+		if(userResponse.isSuccess()){
+			System.out.println(userResponse.getData().getUpdateTime());
 		}
 	}
 	
