@@ -2,7 +2,9 @@ package com.mall.service;
 
 import java.util.Map;
 
+import com.github.pagehelper.PageInfo;
 import com.mall.commom.ServerResponse;
+import com.mall.vo.OrderVo;
 
 public interface IOrderService {
 
@@ -69,5 +71,36 @@ public interface IOrderService {
 	 * @return
 	 */
 	ServerResponse getOrderList(Integer id, int pageNum, int pageSize);
+
+	/**
+	 * 后台管理员查看订单信息
+	 * @param pageNum
+	 * @param pageSize
+	 * @return
+	 */
+	ServerResponse<PageInfo> manageList(int pageNum, int pageSize);
+	
+	/**
+	 * 后台管理员查看订单列表
+	 * @param orderNo
+	 * @return
+	 */
+	ServerResponse<OrderVo> manageDetail(Long orderNo);
+	
+	/**
+	 * 后台管理员搜索订单
+	 * @param orderNo
+	 * @param pageNum
+	 * @param pageSize
+	 * @return
+	 */
+	ServerResponse<PageInfo> manageSearch(Long orderNo, int pageNum, int pageSize);
+	
+	/**
+	 * 发货操作
+	 * @param orderNo
+	 * @return
+	 */
+	ServerResponse<String> manageSendGoods(Long orderNo);
 
 }
