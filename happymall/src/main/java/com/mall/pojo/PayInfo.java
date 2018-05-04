@@ -9,7 +9,7 @@ public class PayInfo {
 
     private Long orderNo;
 
-    private Integer payPlatform;
+    private Integer payPlatform;// 支付平台(微信或支付宝)
 
     private String platformNumber;
 

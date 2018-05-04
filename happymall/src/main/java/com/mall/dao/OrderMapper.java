@@ -1,5 +1,9 @@
 package com.mall.dao;
 
+import java.util.List;
+
+import org.apache.ibatis.annotations.Param;
+
 import com.mall.pojo.Order;
 
 public interface OrderMapper {
@@ -14,4 +18,10 @@ public interface OrderMapper {
     int updateByPrimaryKeySelective(Order record);
 
     int updateByPrimaryKey(Order record);
+
+	Order selectByUserIdAndOrderNo(@Param("userId")Integer userId,@Param("orderNo")Long orderNo);
+
+	Order selectByOrderNo(Long orderNo);
+
+	List<Order> selectByUserId(Integer userId);
 }
