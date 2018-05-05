@@ -28,7 +28,7 @@ import com.mall.service.IOrderService;
 @RequestMapping("/order/")
 public class OrderController {
 	@Autowired
-    private IOrderService iOrderService;
+    private IOrderService orderService;
 	
 	private static  final Logger logger = LoggerFactory.getLogger(OrderController.class);
 	
@@ -40,7 +40,7 @@ public class OrderController {
             return ServerResponse.createByErrorMessage(ResponseCode.NEED_LOGIN.getCode(),ResponseCode.NEED_LOGIN.getDesc());
         }
         String path = request.getSession().getServletContext().getRealPath("upload");
-        return iOrderService.pay(user.getId(),orderNo,path);
+        return orderService.pay(user.getId(),orderNo,path);
 	 }
 	
 
@@ -79,7 +79,7 @@ public class OrderController {
 
 
         //
-        ServerResponse serverResponse = iOrderService.aliCallback(params);
+        ServerResponse serverResponse = orderService.aliCallback(params);
         if(serverResponse.isSuccess()){
             return Const.AlipayCallback.RESPONSE_SUCCESS;
         }
@@ -94,7 +94,7 @@ public class OrderController {
             return ServerResponse.createByErrorMessage(ResponseCode.NEED_LOGIN.getCode(),ResponseCode.NEED_LOGIN.getDesc());
         }
 
-        ServerResponse serverResponse = iOrderService.queryOrderPayStatus(user.getId(),orderNo);
+        ServerResponse serverResponse = orderService.queryOrderPayStatus(user.getId(),orderNo);
         if(serverResponse.isSuccess()){
             return ServerResponse.createBySuccess(true);
         }
@@ -108,7 +108,7 @@ public class OrderController {
         if(user ==null){
             return ServerResponse.createByErrorMessage(ResponseCode.NEED_LOGIN.getCode(),ResponseCode.NEED_LOGIN.getDesc());
         }
-        return iOrderService.createOrder(user.getId(),shippingId);
+        return orderService.createOrder(user.getId(),shippingId);
     }
 	
 	@RequestMapping("cancel.do")
@@ -118,7 +118,7 @@ public class OrderController {
         if(user ==null){
             return ServerResponse.createByErrorMessage(ResponseCode.NEED_LOGIN.getCode(),ResponseCode.NEED_LOGIN.getDesc());
         }
-        return iOrderService.cancel(user.getId(),orderNo);
+        return orderService.cancel(user.getId(),orderNo);
     }
 	
 	@RequestMapping("get_order_cart_product.do")
@@ -128,7 +128,7 @@ public class OrderController {
         if(user ==null){
             return ServerResponse.createByErrorMessage(ResponseCode.NEED_LOGIN.getCode(),ResponseCode.NEED_LOGIN.getDesc());
         }
-        return iOrderService.getOrderCartProduct(user.getId());
+        return orderService.getOrderCartProduct(user.getId());
     }
 	
     @RequestMapping("detail.do")
@@ -138,7 +138,7 @@ public class OrderController {
         if(user ==null){
             return ServerResponse.createByErrorMessage(ResponseCode.NEED_LOGIN.getCode(),ResponseCode.NEED_LOGIN.getDesc());
         }
-        return iOrderService.getOrderDetail(user.getId(),orderNo);
+        return orderService.getOrderDetail(user.getId(),orderNo);
     }
     
     @RequestMapping("list.do")
@@ -148,6 +148,6 @@ public class OrderController {
         if(user ==null){
             return ServerResponse.createByErrorMessage(ResponseCode.NEED_LOGIN.getCode(),ResponseCode.NEED_LOGIN.getDesc());
         }
-        return iOrderService.getOrderList(user.getId(),pageNum,pageSize);
+        return orderService.getOrderList(user.getId(),pageNum,pageSize);
     }
 }
